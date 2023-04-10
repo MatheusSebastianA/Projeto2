@@ -60,6 +60,7 @@ lista_p_t *destroi_lista_pos (lista_p_t *l){
     aux = l->ini;
 
     if (vazia_lista_pos(l)){
+        free(l->ini->pos);
         free(l->ini);
         free(l);
         return NULL;
@@ -67,10 +68,11 @@ lista_p_t *destroi_lista_pos (lista_p_t *l){
       
     while (aux->prox != NULL){
         aux = aux->prox;
+        free(l->ini->pos);
         free(l->ini);
         l->ini = aux;
     }
-
+    free(l->ini->pos);
     free(l->ini);
     free(l);
 
@@ -98,12 +100,10 @@ int insere_ini_lista_pos(lista_p_t *l, char *pos){
     if (vazia_lista_pos(l)){
         if (!(l->ini = malloc(sizeof(nodo_lp_t))))
             return 0;
-        if (!(novo = malloc(sizeof(nodo_lp_t))))
-            return 0;
-        if (!(novo->pos = malloc(sizeof(char)*strlen(pos))))
-            return 0;
-        copia_pos(pos, novo->pos);
-        l->ini = novo;
+        if (!(l->ini->pos = malloc(sizeof(char)*10)))
+            return 0;  
+        
+        copia_pos(pos, l->ini->pos);
         l->ini->prox = NULL;
         l->tamanho++;
     }
@@ -111,7 +111,7 @@ int insere_ini_lista_pos(lista_p_t *l, char *pos){
     else{
         if (!(novo = malloc(sizeof(nodo_lp_t))))
             return 0;
-        if (!(novo->pos = malloc(sizeof(char)*strlen(pos))))
+        if (!(novo->pos = malloc(sizeof(char)*10)))
             return 0;
         novo->prox = l->ini;
         l->ini = novo;
@@ -140,7 +140,7 @@ int insere_ordem_lista_pos (lista_p_t *l, char *pos){
         aux = aux->prox;
     
 
-    novo->pos = malloc(sizeof(char)*strlen(pos));
+    novo->pos = malloc(sizeof(char)*10);
     copia_pos(pos, novo->pos);
     novo->prox = aux->prox;
     aux->prox = novo;
@@ -205,10 +205,13 @@ lista_c_t *destroi_lista_chave(lista_c_t *l){
       
     while (aux->prox != NULL){
         aux = aux->prox;
+        destroi_lista_pos(l->ini->lista_pos);
+        free(l->ini->chave);
         free(l->ini);
         l->ini = aux;
     }
-
+    destroi_lista_pos(l->ini->lista_pos);
+    free(l->ini->chave);
     free(l->ini);
     free(l);
 
@@ -217,13 +220,8 @@ lista_c_t *destroi_lista_chave(lista_c_t *l){
 
 /*  Copia o valor da chave em um ponteiro dado. */
 void copia_chave(char *chave, char *chave_copia){
-    while (*chave != '\0'){
-        *chave_copia = *chave;
-        chave_copia++;
-        chave++;
-    }
-
-    *chave_copia = '\0';
+    *chave_copia = *chave;
+    *(chave_copia+1) = '\0';
 
     return;
 }
@@ -253,12 +251,9 @@ int insere_ini_lista_chave(lista_c_t *l, char *chave, char *pos){
     if (vazia_lista_chave(l)){
         if (!(l->ini = malloc(sizeof(nodo_lc_t))))
             return 0;
-        if (!(novo = malloc(sizeof(nodo_lc_t))))
+        if (!(l->ini->chave = malloc(sizeof(char)*2)))
             return 0;
-        if (!(novo->chave = malloc(sizeof(char)*strlen(chave))))
-            return 0;
-        copia_chave(chave, novo->chave);
-        l->ini = novo;
+        copia_chave(chave, l->ini->chave);  
         l->ini->prox = NULL;
         l->ini->lista_pos = cria_lista_pos();
         insere_ordem_lista_pos(l->ini->lista_pos, pos);
@@ -270,10 +265,9 @@ int insere_ini_lista_chave(lista_c_t *l, char *chave, char *pos){
             insere_ordem_lista_pos(l->ini->lista_pos, pos);
             return 0;
         }
-            
         if (!(novo = malloc(sizeof(nodo_lc_t))))
             return 0;
-        if (!(novo->chave = malloc(sizeof(char)*strlen(chave))))
+        if (!(novo->chave = malloc(sizeof(char)*2)))
             return 0;
         novo->prox = l->ini;
         l->ini = novo;
@@ -317,7 +311,7 @@ int insere_ordem_lista_chave (lista_c_t *l, char *chave, char *pos){
         aux = aux->prox;
     }
 
-    novo->chave = malloc(sizeof(char)*strlen(chave));
+    novo->chave = malloc(sizeof(char)*2);
     copia_chave(chave, novo->chave);
     novo->prox = aux->prox;
     aux->prox = novo;
@@ -347,13 +341,12 @@ void imprime_lista_chave(lista_c_t *l){
 int main(){
 
     int cont_posicao;
-    char *chave, *pos, *palavra, *primeira_letra;
+    char *pos, *palavra, *primeira_letra;
     FILE *arq;
     lista_c_t *lista_chave;
 
     lista_chave = cria_lista_chave();
 
-    chave = malloc(sizeof(char)*2);
     pos = malloc(sizeof(char)*256);
     palavra = malloc(sizeof(char)*256);
     primeira_letra = malloc(sizeof(char)*2);
@@ -375,5 +368,10 @@ int main(){
     
     imprime_lista_chave(lista_chave);
     fclose(arq);
+
+    destroi_lista_chave(lista_chave);
+    free(pos);
+    free(palavra);
+    free(primeira_letra);
     return 0;
 }  
