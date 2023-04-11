@@ -10,9 +10,9 @@ int codifica_caractere(lista_c_t *l, char c, char *c_cod){
     aux = l->ini;
 
     if (c == 32){
-        c_cod[0] == '-';
-        c_cod[1] == '1';
-        c_cod[2] == '\0';
+        c_cod[0] = '-';
+        c_cod[1] = '1';
+        c_cod[2] = '\0';
         return 1;
     }
 
