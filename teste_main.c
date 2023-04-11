@@ -17,7 +17,7 @@ typedef struct lista_pos lista_p_t;
 
 /* Nodo que apresenta uma chave, um ponteiro para o próximo nodo e uma lista de valores com as posições */
 struct nodo_l_chave {
-    char *chave;
+    char chave;
     struct nodo_l_chave *prox;
     lista_p_t *lista_pos;
 };
@@ -206,24 +206,14 @@ lista_c_t *destroi_lista_chave(lista_c_t *l){
     while (aux->prox != NULL){
         aux = aux->prox;
         destroi_lista_pos(l->ini->lista_pos);
-        free(l->ini->chave);
         free(l->ini);
         l->ini = aux;
     }
     destroi_lista_pos(l->ini->lista_pos);
-    free(l->ini->chave);
     free(l->ini);
     free(l);
 
     return NULL;
-}
-
-/*  Copia o valor da chave em um ponteiro dado. */
-void copia_chave(char *chave, char *chave_copia){
-    *chave_copia = *chave;
-    *(chave_copia+1) = '\0';
-
-    return;
 }
 
 /*  Verifica se a chave já existe na lista de chaves. */
@@ -235,7 +225,7 @@ int existe_chave(lista_c_t *l, char *chave){
     
     aux = l->ini;
     while (aux != NULL){
-        if (*aux->chave == *chave)
+        if (aux->chave == *chave)
             return 1;
         aux = aux->prox;
     }
@@ -245,15 +235,13 @@ int existe_chave(lista_c_t *l, char *chave){
 
 /*  Insere a chave na lista.
     Retorna 1 se a operacao foi bem sucedida e 0 caso contrario. */
-int insere_ini_lista_chave(lista_c_t *l, char *chave, char *pos){
+int insere_ini_lista_chave(lista_c_t *l, char chave, char *pos){
     nodo_lc_t *novo;
 
     if (vazia_lista_chave(l)){
         if (!(l->ini = malloc(sizeof(nodo_lc_t))))
             return 0;
-        if (!(l->ini->chave = malloc(sizeof(char)*2)))
-            return 0;
-        copia_chave(chave, l->ini->chave);  
+        l->ini->chave = chave;
         l->ini->prox = NULL;
         l->ini->lista_pos = cria_lista_pos();
         insere_ordem_lista_pos(l->ini->lista_pos, pos);
@@ -261,17 +249,15 @@ int insere_ini_lista_chave(lista_c_t *l, char *chave, char *pos){
     }
 
     else{
-        if (existe_chave(l, chave)){
+        if (existe_chave(l, &chave)){
             insere_ordem_lista_pos(l->ini->lista_pos, pos);
             return 0;
         }
         if (!(novo = malloc(sizeof(nodo_lc_t))))
             return 0;
-        if (!(novo->chave = malloc(sizeof(char)*2)))
-            return 0;
         novo->prox = l->ini;
         l->ini = novo;
-        copia_chave(chave, l->ini->chave);
+        l->ini->chave = chave;
         l->ini->lista_pos = cria_lista_pos();
         insere_ordem_lista_pos(l->ini->lista_pos, pos);
         l->tamanho++;
@@ -283,20 +269,20 @@ int insere_ini_lista_chave(lista_c_t *l, char *chave, char *pos){
 
 /*  Insere a chave pela ordem.
     Retorna 1 se a chave foi adicionada e 0 caso contrario. */
-int insere_ordem_lista_chave (lista_c_t *l, char *chave, char *pos){
+int insere_ordem_lista_chave (lista_c_t *l, char chave, char *pos){
     nodo_lc_t *aux, *novo;
 
-    if (existe_chave(l, chave)){
+    if (existe_chave(l, &chave)){
         aux = l->ini;
         while (aux != NULL){
-            if (*aux->chave == *chave)
+            if (aux->chave == chave)
                 insere_ordem_lista_pos(aux->lista_pos, pos);
             aux = aux->prox;
         }
         return 0;
     }
 
-    if (vazia_lista_chave(l) || (*(l->ini->chave) > *chave)){
+    if (vazia_lista_chave(l) || (l->ini->chave > chave)){
         insere_ini_lista_chave(l, chave, pos);
         return 1;
     } 
@@ -306,13 +292,12 @@ int insere_ordem_lista_chave (lista_c_t *l, char *chave, char *pos){
     
     aux = l->ini;
 
-    while ((aux->prox != NULL) && (*(aux->prox->chave) <= *chave)){
-        if (*aux->chave <= *chave)
+    while ((aux->prox != NULL) && (aux->prox->chave <= chave)){
+        if (aux->chave <= chave)
         aux = aux->prox;
     }
 
-    novo->chave = malloc(sizeof(char)*2);
-    copia_chave(chave, novo->chave);
+    novo->chave = chave;
     novo->prox = aux->prox;
     aux->prox = novo;
     aux->prox->lista_pos = cria_lista_pos();
@@ -332,7 +317,7 @@ void imprime_lista_chave(lista_c_t *l){
     
     aux = l->ini;
     while (aux != NULL){
-        printf("%s: ", aux->chave);
+        printf("%c: ", aux->chave);
         imprime_lista_pos(aux->lista_pos);
         aux = aux->prox;
     }
@@ -341,7 +326,7 @@ void imprime_lista_chave(lista_c_t *l){
 int main(){
 
     int cont_posicao;
-    char *pos, *palavra, *primeira_letra;
+    char *pos, *palavra, primeira_letra;
     FILE *arq;
     lista_c_t *lista_chave;
 
@@ -349,7 +334,6 @@ int main(){
 
     pos = malloc(sizeof(char)*256);
     palavra = malloc(sizeof(char)*256);
-    primeira_letra = malloc(sizeof(char)*2);
     cont_posicao = 0;
 
     arq = fopen("numeros.txt", "r");
@@ -360,7 +344,7 @@ int main(){
     }
 
     while (fscanf (arq, "%s", palavra) !=  EOF){
-        *primeira_letra = *palavra+0;
+        primeira_letra = *palavra+0;
         sprintf(pos, "%d", cont_posicao);
         cont_posicao++;
         insere_ordem_lista_chave(lista_chave, primeira_letra, pos);
@@ -372,6 +356,5 @@ int main(){
     destroi_lista_chave(lista_chave);
     free(pos);
     free(palavra);
-    free(primeira_letra);
     return 0;
 }  
