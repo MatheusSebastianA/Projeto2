@@ -323,10 +323,43 @@ void imprime_lista_chave(lista_c_t *l){
     }
 }
 
+int codifica_caractere(lista_c_t *l, char c, char *c_cod){
+    int cont, i;
+    nodo_lc_t *aux;
+    aux = l->ini;
+
+    if (c == 32){
+        c_cod[0] == '-';
+        c_cod[1] == '1';
+        c_cod[2] == '\0';
+        return 1;
+    }
+
+    if (existe_chave(l, &c))
+        while (aux != NULL){
+        if (aux->chave == c){
+            if (aux->lista_pos->tamanho > 1){
+                cont = rand() % (aux->lista_pos->tamanho - 1);
+                for (i = 0; i < cont; i++)
+                    aux->lista_pos->ini = aux->lista_pos->ini->prox;
+            }
+            
+            for (i = 0; i < strlen(aux->lista_pos->ini->pos); i++)
+                c_cod[i] = aux->lista_pos->ini->pos[i];
+            c_cod[i+1] = '\0';
+            return 1;
+        }
+        aux = aux->prox;
+    }
+
+    return 0;
+}
+
+
 int main(){
 
     int cont_posicao;
-    char *pos, *palavra, primeira_letra;
+    char *pos, *palavra, primeira_letra, letra, *letra_cod;
     FILE *arq;
     lista_c_t *lista_chave;
 
@@ -334,6 +367,7 @@ int main(){
 
     pos = malloc(sizeof(char)*256);
     palavra = malloc(sizeof(char)*256);
+    letra_cod = malloc(sizeof(char)*15);
     cont_posicao = 0;
 
     arq = fopen("numeros.txt", "r");
@@ -353,7 +387,13 @@ int main(){
     imprime_lista_chave(lista_chave);
     fclose(arq);
 
+    scanf("%c", &letra);
+    codifica_caractere(lista_chave, letra, letra_cod);
+    printf("A letra %c pode ser codificada como %s", letra, letra_cod);
+
+
     destroi_lista_chave(lista_chave);
+    free(letra_cod);
     free(pos);
     free(palavra);
     return 0;
