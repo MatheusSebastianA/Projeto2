@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 /* Nodo que apresenta uma string e um ponteiro para o próximo nodo */
 struct nodo_l_pos {
@@ -324,10 +325,12 @@ void imprime_lista_chave(lista_c_t *l){
 }
 
 int codifica_caractere(lista_c_t *l, char c, char *c_cod){
-    int cont, i;
+    int cont, i, tam;
     nodo_lc_t *aux;
+    nodo_lp_t *aux_ini_pos;
     aux = l->ini;
 
+    
     if (c == ' '){
         c_cod[0] = '-';
         c_cod[1] = '1';
@@ -335,32 +338,104 @@ int codifica_caractere(lista_c_t *l, char c, char *c_cod){
         return 1;
     }
 
-    if (existe_chave(l, &c))
+    if (existe_chave(l, &c)){
         while (aux != NULL){
-        if (aux->chave == c){
-            if (aux->lista_pos->tamanho > 1){
-                cont = rand() % (aux->lista_pos->tamanho - 1);
-                for (i = 0; i < cont; i++)
-                    aux->lista_pos->ini = aux->lista_pos->ini->prox;
+            if (aux->chave == c){
+                cont = aux->lista_pos->tamanho;
+
+                if(cont == 1){
+                    aux_ini_pos = aux->lista_pos->ini;
+                    tam = strlen(aux_ini_pos->pos);
+                }
+
+                if (cont > 1){
+                    cont = rand() % cont;
+                    aux_ini_pos = aux->lista_pos->ini;
+                    for (i = 0; i < cont; i++){                   
+                        if(aux_ini_pos->prox != NULL){
+                            aux_ini_pos = aux_ini_pos->prox;
+                        }
+                    }
+                    tam = strlen(aux_ini_pos->pos);
+                }
+                
+
+                if (tam == 1){
+                    c_cod[0] = aux_ini_pos->pos[0];
+                    c_cod[1] = '\0';
+                }
+
+                for (i = 0; i < tam; i++)
+                    c_cod[i] = aux_ini_pos->pos[i];
+                c_cod[i+1] = '\0';
+                return 1;
             }
-            
-            for (i = 0; i < strlen(aux->lista_pos->ini->pos); i++)
-                c_cod[i] = aux->lista_pos->ini->pos[i];
-            c_cod[i+1] = '\0';
-            return 1;
-        }
         aux = aux->prox;
+        }
     }
+
+    c_cod[0] = 'N';
+    c_cod[1] = 'F';
+    c_cod[2] = '\0';
 
     return 0;
 }
 
+int posicao_existe_lista_pos(lista_p_t *l_p, char *chave_pos){
+    int i, igual, tam;
+    nodo_lp_t *aux;
+
+    aux = l_p->ini;
+
+    while (aux != NULL){
+        tam = strlen(chave_pos);
+        igual = 0;
+
+        if (tam == strlen(aux->pos)){
+            for(i = 0; i < tam; i++){
+                if(chave_pos[i] == aux->pos[i])
+                    igual++;
+            }
+            if(igual == tam){
+                return 1;
+            }
+        }
+       aux = aux->prox;
+    }
+
+    return 0;
+
+}
+
+void decodifica_caractere(lista_c_t *l, char *chave_pos, char *c_decod){
+    nodo_lc_t *aux_chave;
+
+    if (chave_pos[0] == '-' && chave_pos[1] == '1'){
+        *c_decod = ' ';
+        return;
+    }
+    
+    aux_chave = l->ini;
+
+    while(aux_chave != NULL){ /*Laço que passa por todas as chaves*/
+        if (posicao_existe_lista_pos(aux_chave->lista_pos, chave_pos)){ /*Para cada lista de posições dessa chave, chama uma função para verificar se existe alguma posição que representa o código procurado*/ 
+            *c_decod = aux_chave->chave;
+            return;
+        }
+        aux_chave = aux_chave->prox;
+    }
+
+    *c_decod = '-'; /*Caso não tenha sido encontrado a posição é retornado "-" para representar "Not Found"*/
+
+    return;
+}
+
 
 int main(){
-
+    srand(time(NULL));
     int cont_posicao;
-    char *pos, *palavra, primeira_letra, letra, *letra_cod;
-    FILE *arq;
+    char *pos, *palavra, primeira_letra, c, *letra_cod, letra_decod, *num_pos;
+    FILE *arq, *arq_frase, *arq_dst, *arq_decod;
     lista_c_t *lista_chave;
 
     lista_chave = cria_lista_chave();
@@ -368,9 +443,10 @@ int main(){
     pos = malloc(sizeof(char)*256);
     palavra = malloc(sizeof(char)*256);
     letra_cod = malloc(sizeof(char)*15);
+    num_pos = malloc(sizeof(char)*256);
     cont_posicao = 0;
 
-    arq = fopen("numeros.txt", "r");
+    arq = fopen("livro_cifras.txt", "r");
 
     if ( ! arq ){
         printf("Erro ao abrir arquivo");
@@ -385,16 +461,60 @@ int main(){
     }
     
     imprime_lista_chave(lista_chave);
+
+    arq_frase = fopen("frase.txt", "r");
+    
+    if ( ! arq_frase ){
+        printf("Erro ao abrir arquivo");
+        return 0;
+    }
+
+    
+    arq_dst = fopen("frase_cod.txt", "w");
+
+    if ( ! arq_dst ){
+        printf("Erro ao abrir arquivo");
+        return 0;
+    }
+
+    c = fgetc(arq_frase);
+    while ( c != EOF){  
+        if (c != '\n'){
+            printf("Letra a ser cod %c\n", c);
+            codifica_caractere(lista_chave, c, letra_cod);
+            fprintf(arq_dst, "%s ", letra_cod);
+        }
+        c = fgetc(arq_frase);
+    }
+
+    fclose(arq_dst);
+
+    if (!(arq_decod = fopen("frase_deco.txt", "w"))){
+        printf("Erro ao abrir arquivo");
+        return 0;
+    }
+
+    if (!(arq_dst = fopen("frase_cod.txt", "r")) ){
+        printf("Erro ao abrir arquivo");
+        return 0;
+    }
+
+    while(fscanf(arq_dst, "%s", num_pos) != EOF){
+        printf("Vai decodificiar %s\n", num_pos);
+        decodifica_caractere(lista_chave, num_pos, &letra_decod);
+        printf("Decodificado fica: %c\n", letra_decod);
+        fprintf(arq_decod, "%c", letra_decod);
+    }
+
+    
+    fclose(arq_frase);
     fclose(arq);
-
-    scanf("%c", &letra);
-    codifica_caractere(lista_chave, letra, letra_cod);
-    printf("A letra %c pode ser codificada como %s", letra, letra_cod);
-
-
+    fclose(arq_decod);
+    fclose(arq_dst);
     destroi_lista_chave(lista_chave);
     free(letra_cod);
     free(pos);
     free(palavra);
+    free(num_pos);
     return 0;
 }  
