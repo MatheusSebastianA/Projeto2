@@ -32,7 +32,6 @@ int codifica_caractere(lista_c_t *l, char c, char *c_cod){
                     }
                 }
                 tam = strlen(aux_ini_pos->pos);
-                printf("O tamanho da posição aqui vai ser %d\n", tam);
 
                 if (tam == 1){
                     c_cod[0] = aux_ini_pos->pos[0];
@@ -43,7 +42,6 @@ int codifica_caractere(lista_c_t *l, char c, char *c_cod){
                     c_cod[i] = aux_ini_pos->pos[i];
                     c_cod[i+1] = '\0';
                 }
-                printf("POR QUE KRLS%s", c_cod);
                 return 1;
             }
         aux = aux->prox;
