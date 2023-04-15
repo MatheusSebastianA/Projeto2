@@ -3,7 +3,7 @@ int codifica_caractere(lista_c_t *l, char c, char *c_cod){
     nodo_lc_t *aux;
     nodo_lp_t *aux_ini_pos;
     aux = l->ini;
-
+    tam = 0;
     
     if (c == ' '){
         c_cod[0] = '-';
@@ -30,18 +30,20 @@ int codifica_caractere(lista_c_t *l, char c, char *c_cod){
                             aux_ini_pos = aux_ini_pos->prox;
                         }
                     }
-                    tam = strlen(aux_ini_pos->pos);
                 }
-                
+                tam = strlen(aux_ini_pos->pos);
+                printf("O tamanho da posição aqui vai ser %d\n", tam);
 
                 if (tam == 1){
                     c_cod[0] = aux_ini_pos->pos[0];
                     c_cod[1] = '\0';
                 }
 
-                for (i = 0; i < tam; i++)
+                for (i = 0; i < tam; i++){
                     c_cod[i] = aux_ini_pos->pos[i];
-                c_cod[i+1] = '\0';
+                    c_cod[i+1] = '\0';
+                }
+                printf("POR QUE KRLS%s", c_cod);
                 return 1;
             }
         aux = aux->prox;
