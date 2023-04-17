@@ -29,5 +29,7 @@ beale.o: beale.c
 clean:
 	rm -f $(objects) mundo
 
+purge:
+	rm *.o beale
 
 
