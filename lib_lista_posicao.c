@@ -123,9 +123,9 @@ int insere_ordem_lista_pos (lista_p_t *l, char *pos){
     return 1;
 }
 
-/* para depuracao */
-void imprime_lista_pos(lista_p_t *l){
+void imprime_lista_pos_arq(lista_p_t *l, FILE *arq_destino_chaves){
     nodo_lp_t *aux;
+
     if (vazia_lista_pos(l)){
         printf("Lista vazia");
         return;
@@ -134,9 +134,9 @@ void imprime_lista_pos(lista_p_t *l){
     aux = l->ini;
     while (aux != NULL){
         if (aux->prox == NULL)
-            printf("%s\n", aux->pos);
+            fprintf(arq_destino_chaves, "%s\n", aux->pos);
         else
-            printf("%s ", aux->pos);
+            fprintf(arq_destino_chaves, "%s ", aux->pos);
         aux = aux->prox;
     }
 }
