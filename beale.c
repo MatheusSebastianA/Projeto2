@@ -10,8 +10,8 @@
 int main(){
     srand(time(NULL));
     int cont_posicao;
-    char *pos, *palavra, primeira_letra, c, *letra_cod, letra_decod, *num_pos;
-    FILE *arq, *arq_frase, *arq_dst, *arq_decod;
+    char *pos, *palavra, primeira_letra, c, *letra_cod, letra_decod, *num_pos, nome_arq[100];
+    FILE *arq, *arq_frase, *arq_dst, *arq_decod, *arq_lista;
     lista_c_t *lista_chave;
 
     lista_chave = cria_lista_chave();
@@ -22,9 +22,8 @@ int main(){
     num_pos = malloc(sizeof(char)*256);
     cont_posicao = 0;
 
-    arq = fopen("livro_cifras.txt", "r");
 
-    if ( ! arq ){
+    if (!(arq =fopen("livro_cifras.txt", "r"))){
         printf("Erro ao abrir arquivo");
         return 0;
     }
@@ -35,20 +34,28 @@ int main(){
         cont_posicao++;
         insere_ordem_lista_chave(lista_chave, primeira_letra, pos);
     }
-    
-    imprime_lista_chave(lista_chave);
 
-    arq_frase = fopen("frase.txt", "r");
-    
-    if ( ! arq_frase ){
+    if (!(arq_decod = fopen("frase_deco.txt", "w"))){
         printf("Erro ao abrir arquivo");
         return 0;
     }
 
-    
-    arq_dst = fopen("frase_cod.txt", "w");
+    printf("Digita um nome ae irmao: ");
+    scanf("%s", nome_arq);
 
-    if ( ! arq_dst ){
+    if (!(arq_lista = fopen(nome_arq, "w"))){
+        printf("Erro ao abrir arquivo");
+        return 0;
+    }
+
+    imprime_lista_chave_arq(lista_chave, arq_lista);
+    
+    if (!(arq_frase = fopen("frase.txt", "r"))){
+        printf("Erro ao abrir arquivo");
+        return 0;
+    }
+
+    if (!(arq_dst = fopen("frase_cod.txt", "w"))){
         printf("Erro ao abrir arquivo");
         return 0;
     }
