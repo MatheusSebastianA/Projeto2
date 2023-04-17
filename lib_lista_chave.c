@@ -144,8 +144,9 @@ int insere_ordem_lista_chave (lista_c_t *l, char chave, char *pos){
 }
 
 /* para depuracao */
-void imprime_lista_chave(lista_c_t *l){
+void imprime_lista_chave_arq(lista_c_t *l, FILE *arq_destino_chaves){
     nodo_lc_t *aux;
+
     if (vazia_lista_chave(l)){
         printf("Lista vazia");
         return;
@@ -153,8 +154,8 @@ void imprime_lista_chave(lista_c_t *l){
     
     aux = l->ini;
     while (aux != NULL){
-        printf("%c: ", aux->chave);
-        imprime_lista_pos(aux->lista_pos);
+        fprintf(arq_destino_chaves, "%c: ", aux->chave);
+        imprime_lista_pos_arq(aux->lista_pos, arq_destino_chaves);
         aux = aux->prox;
     }
 }
