@@ -107,7 +107,10 @@ int insere_ini_lista_chave(lista_c_t *l, char chave, char *pos){
     Retorna 1 se a chave foi adicionada e 0 caso contrario. */
 int insere_ordem_lista_chave (lista_c_t *l, char chave, char *pos){
     nodo_lc_t *aux, *novo;
-
+    
+    if (chave < 0 || chave > 255)
+        return 1;
+       
     if (existe_chave(l, &chave)){
         aux = l->ini;
         while (aux != NULL){
