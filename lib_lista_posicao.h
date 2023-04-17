@@ -1,3 +1,6 @@
+#ifndef lib_lista_posicao
+#define lib_lista_posicao
+
 /* Nodo que apresenta uma string e um ponteiro para o próximo nodo */
 struct nodo_l_pos{
     char *pos;
@@ -25,4 +28,6 @@ int insere_ini_lista_pos(lista_p_t *l, char *string);
 
 int insere_ordem_lista_pos(lista_p_t *l, char *string);
 
-void imprime_lista_pos(lista_p_t *l);
+void imprime_lista_pos_arq(lista_p_t *l, FILE *arq_destino_chaves);
+
+#endif /* lib_lista_posicao */
