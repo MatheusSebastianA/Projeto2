@@ -1,4 +1,8 @@
+#ifndef lib_lista_chave
+#define lib_lista_chave
+
 #include "lib_lista_posicao.h"
+
 /* Nodo que apresenta uma chave, um ponteiro para o próximo nodo e uma lista de valores com as posições */
 struct nodo_l_chave {
     char chave;
@@ -29,4 +33,6 @@ int insere_ini_lista_chave(lista_c_t *l, char chave, char *pos);
 
 int insere_ordem_lista_chave (lista_c_t *l, char chave, char *pos);
 
-void imprime_lista_chave(lista_c_t *l);
+void imprime_lista_chave_arq(lista_c_t *l, FILE *arq_destino_chaves);
+
+#endif /* lib_lista_chave */
