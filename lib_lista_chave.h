@@ -35,4 +35,6 @@ int insere_ordem_lista_chave (lista_c_t *l, char chave, char *pos);
 
 void imprime_lista_chave_arq(lista_c_t *l, FILE *arq_destino_chaves);
 
+void valores_livro_chave(lista_c_t *l, FILE *arq);
+
 #endif /* lib_lista_chave */
