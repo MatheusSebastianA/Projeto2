@@ -1,3 +1,5 @@
+#ifndef decodifica
+#define decodifica
 #include "lib_lista_chave.h"
 
 /*
@@ -12,3 +14,4 @@ retorna o caracter que representa o c√≥digo decodificado funcionou ou "NF" se n√
 */
 void decodifica_caractere(lista_c_t *l, char *chave_pos, char *c_decod);
 
+#endif /*decodifica*/
