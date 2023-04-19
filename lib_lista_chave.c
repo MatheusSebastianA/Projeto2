@@ -108,7 +108,7 @@ int insere_ini_lista_chave(lista_c_t *l, char chave, char *pos){
 int insere_ordem_lista_chave (lista_c_t *l, char chave, char *pos){
     nodo_lc_t *aux, *novo;
     
-    if (chave < 0 || chave > 255)
+    if (chave < 0 || chave > 127)
         return 1;
        
     if (existe_chave(l, &chave)){
