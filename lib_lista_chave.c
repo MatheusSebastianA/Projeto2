@@ -162,3 +162,23 @@ void imprime_lista_chave_arq(lista_c_t *l, FILE *arq_destino_chaves){
         aux = aux->prox;
     }
 }
+
+void valores_livro_chave(lista_c_t *l, FILE *arq){
+    int cont_posicao = 0;
+    char primeira_letra, *pos, *palavra;
+
+    palavra = malloc(sizeof(char)*256);
+    pos = malloc(sizeof(char)*256);
+
+    while (fscanf (arq, "%s", palavra) !=  EOF){
+        primeira_letra = *palavra+0;
+        sprintf(pos, "%d", cont_posicao);
+        cont_posicao++;
+        insere_ordem_lista_chave(l, primeira_letra, pos);
+    }
+
+    free(pos);
+    free(palavra);
+
+    return;
+}
