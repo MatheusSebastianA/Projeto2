@@ -202,5 +202,9 @@ void valores_arquivo_chaves(lista_c_t *l, FILE *arquivo_chaves){
             teste = fgetc(arquivo_chaves);
         }
     }
+    
+    free(letra_ponto);
+    free(pos);
+    
     return;
 }
