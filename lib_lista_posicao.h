@@ -31,3 +31,4 @@ int insere_ordem_lista_pos(lista_p_t *l, char *string);
 void imprime_lista_pos_arq(lista_p_t *l, FILE *arq_destino_chaves);
 
 #endif /* lib_lista_posicao */
+ 
