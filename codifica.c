@@ -1,3 +1,9 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include "codifica.h"
+
 int codifica_caractere(lista_c_t *l, char c, char *c_cod){
     int cont, i, tam;
     nodo_lc_t *aux;
@@ -8,6 +14,13 @@ int codifica_caractere(lista_c_t *l, char c, char *c_cod){
     if (c == ' '){
         c_cod[0] = '-';
         c_cod[1] = '1';
+        c_cod[2] = '\0';
+        return 1;
+    }
+
+    if (c == '\n'){
+        c_cod[0] = '-';
+        c_cod[1] = '2';
         c_cod[2] = '\0';
         return 1;
     }
@@ -48,9 +61,26 @@ int codifica_caractere(lista_c_t *l, char c, char *c_cod){
         }
     }
 
-    c_cod[0] = 'N';
-    c_cod[1] = 'F';
+    c_cod[0] = '-';
+    c_cod[1] = '3';
     c_cod[2] = '\0';
 
     return 0;
+}
+
+void codifica_arquivo(lista_c_t *l, FILE *mensagem_original, FILE *mensagem_codificada){
+    char *letra_cod, c;
+
+    letra_cod = malloc(sizeof(char)*16);
+
+    c = fgetc(mensagem_original);
+    while ( c != EOF){  
+        codifica_caractere(l, c, letra_cod);
+        fprintf(mensagem_codificada, "%s ", letra_cod);
+        c = fgetc(mensagem_original);
+    }
+
+    free(letra_cod);
+
+    return;
 }
