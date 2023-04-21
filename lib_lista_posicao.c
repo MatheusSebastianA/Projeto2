@@ -41,10 +41,12 @@ lista_p_t *destroi_lista_pos(lista_p_t *l){
       
     while (aux->prox != NULL){
         aux = aux->prox;
+        free(l->ini->pos);
         free(l->ini);
         l->ini = aux;
     }
 
+    free(l->ini->pos);
     free(l->ini);
     free(l);
 
@@ -53,13 +55,14 @@ lista_p_t *destroi_lista_pos(lista_p_t *l){
 
 /*  Copia o valor da posicao em um ponteiro dado. */
 void copia_pos(char *pos, char *pos_copia){
-    while (*pos != '\0'){
-        *pos_copia = *pos;
-        pos_copia++;
-        pos++;
-    }
+    int i, tam;
 
-    *pos_copia = '\0';
+    tam = strlen(pos);
+
+    for (i = 0; i < tam; i++)
+        pos_copia[i] = pos[i];
+
+    pos_copia[i] = '\0';
 
     return;
 }
@@ -72,24 +75,21 @@ int insere_ini_lista_pos(lista_p_t *l, char *pos){
     if (vazia_lista_pos(l)){
         if (!(l->ini = malloc(sizeof(nodo_lp_t))))
             return 0;
-        if (!(novo = malloc(sizeof(nodo_lp_t))))
+        if (!(l->ini->pos = malloc(sizeof(char)*strlen(pos)+1)))
             return 0;
-        if (!(novo->pos = malloc(sizeof(char)*strlen(pos))))
-            return 0;
-        copia_pos(pos, novo->pos);
-        l->ini = novo;
+        copia_pos(pos, l->ini->pos);
         l->ini->prox = NULL;
         l->tamanho++;
     }
 
     else{
-        if (!(novo = malloc(sizeof(nodo_lp_t))))
+        novo = l->ini;
+        if (!(l->ini = malloc(sizeof(nodo_lp_t))))
             return 0;
-        if (!(novo->pos = malloc(sizeof(char)*strlen(pos))))
+        if (!(l->ini->pos = malloc(sizeof(char)*strlen(pos)+1)))
             return 0;
-        novo->prox = l->ini;
-        l->ini = novo;
         copia_pos(pos, l->ini->pos);
+        l->ini->prox = novo;
         l->tamanho++;
     }
 
@@ -114,7 +114,7 @@ int insere_ordem_lista_pos (lista_p_t *l, char *pos){
         aux = aux->prox;
     
 
-    novo->pos = malloc(sizeof(char)*strlen(pos));
+    novo->pos = malloc(sizeof(char)*strlen(pos)+1);
     copia_pos(pos, novo->pos);
     novo->prox = aux->prox;
     aux->prox = novo;
