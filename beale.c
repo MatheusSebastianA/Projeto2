@@ -9,41 +9,33 @@
 
 int main(){
     srand(time(NULL));
-    int cont_posicao;
-    char *pos, *palavra, primeira_letra, c, *letra_cod, letra_decod, *num_pos, nome_arq[100];
-    FILE *arq, *arq_frase, *arq_dst, *arq_decod, *arq_lista;
+    FILE *arq, *arq_frase, *arq_dst, *arq_decod, *arq_lista, *arq_chaves;
     lista_c_t *lista_chave;
 
     lista_chave = cria_lista_chave();
 
-    pos = malloc(sizeof(char)*256);
-    palavra = malloc(sizeof(char)*256);
-    letra_cod = malloc(sizeof(char)*15);
-    num_pos = malloc(sizeof(char)*256);
-    cont_posicao = 0;
-
-
-    if (!(arq =fopen("livro_cifras.txt", "r"))){
+    
+    if (!(arq = fopen("livro_cifras.txt", "r"))){
         printf("Erro ao abrir arquivo");
         return 0;
     }
 
-    while (fscanf (arq, "%s", palavra) !=  EOF){
-        primeira_letra = *palavra+0;
-        sprintf(pos, "%d", cont_posicao);
-        cont_posicao++;
-        insere_ordem_lista_chave(lista_chave, primeira_letra, pos);
+    valores_livro_cifra(lista_chave, arq);*/
+
+
+    if (!(arq_chaves = fopen("arq_chaves.txt", "r"))){
+        printf("Erro ao abrir arquivo");
+        return 0;
     }
+
+    valores_arquivo_chaves(lista_chave, arq_chaves); 
 
     if (!(arq_decod = fopen("frase_deco.txt", "w"))){
         printf("Erro ao abrir arquivo");
         return 0;
     }
 
-    printf("Digita um nome ae irmao: ");
-    scanf("%s", nome_arq);
-
-    if (!(arq_lista = fopen(nome_arq, "w"))){
+    if (!(arq_lista = fopen("Chaves.txt", "w"))){
         printf("Erro ao abrir arquivo");
         return 0;
     }
@@ -60,16 +52,10 @@ int main(){
         return 0;
     }
 
-    c = fgetc(arq_frase);
-    while ( c != EOF){  
-        if (c != '\n'){
-            codifica_caractere(lista_chave, c, letra_cod);
-            fprintf(arq_dst, "%s ", letra_cod);
-        }
-        c = fgetc(arq_frase);
-    }
+    codifica_arquivo(lista_chave, arq_frase, arq_dst);
 
     fclose(arq_dst);
+    fclose(arq_decod);
 
     if (!(arq_decod = fopen("frase_deco.txt", "w"))){
         printf("Erro ao abrir arquivo");
@@ -81,20 +67,14 @@ int main(){
         return 0;
     }
 
-    while(fscanf(arq_dst, "%s", num_pos) != EOF){
-        decodifica_caractere(lista_chave, num_pos, &letra_decod);
-        fprintf(arq_decod, "%c", letra_decod);
-    }
-
+    decodifica_arquivo(lista_chave, arq_dst, arq_decod);
     
+
+    fclose(arq); 
     fclose(arq_frase);
-    fclose(arq);
     fclose(arq_decod);
     fclose(arq_dst);
+    fclose(arq_lista);
     destroi_lista_chave(lista_chave);
-    free(letra_cod);
-    free(pos);
-    free(palavra);
-    free(num_pos);
     return 0;
 }  
