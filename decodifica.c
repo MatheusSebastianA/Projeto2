@@ -35,6 +35,11 @@ void decodifica_caractere(lista_c_t *l, char *chave_pos, char *c_decod){
         *c_decod = ' ';
         return;
     }
+
+    if (chave_pos[0] == '-' && chave_pos[1] == '2'){
+        *c_decod = '\n';
+        return;
+    }
     
     aux_chave = l->ini;
 
@@ -47,6 +52,22 @@ void decodifica_caractere(lista_c_t *l, char *chave_pos, char *c_decod){
     }
 
     *c_decod = '-'; /*Caso não tenha sido encontrado a posição é retornado "-" para representar "Not Found"*/
+
+    return;
+}
+
+void decodifica_arquivo(lista_c_t *l, FILE *mensagem_codificada, FILE *mensagem_decodificada){
+    char *num_pos, letra_decod;
+
+    if(!(num_pos = malloc(sizeof(char)*256)))
+        return;
+
+    while(fscanf(mensagem_codificada, "%s", num_pos) != EOF){
+        decodifica_caractere(l, num_pos, &letra_decod);
+        fprintf(mensagem_decodificada, "%c", letra_decod);
+    }
+
+    free(num_pos);
 
     return;
 }
