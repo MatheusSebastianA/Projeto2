@@ -20,7 +20,7 @@ int main(){
         return 0;
     }
 
-    valores_livro_cifra(lista_chave, arq);*/
+    valores_livro_cifra(lista_chave, arq);
 
 
     if (!(arq_chaves = fopen("arq_chaves.txt", "r"))){
@@ -70,7 +70,8 @@ int main(){
     decodifica_arquivo(lista_chave, arq_dst, arq_decod);
     
 
-    fclose(arq); 
+    fclose(arq);
+    fclose(arq_chaves);
     fclose(arq_frase);
     fclose(arq_decod);
     fclose(arq_dst);
