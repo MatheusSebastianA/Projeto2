@@ -33,8 +33,10 @@ int insere_ini_lista_chave(lista_c_t *l, char chave, char *pos);
 
 int insere_ordem_lista_chave (lista_c_t *l, char chave, char *pos);
 
-void imprime_lista_chave_arq(lista_c_t *l, FILE *arq_destino_chaves);
+void imprime_lista_chave_arq(lista_c_t *l, FILE *arquivo_chaves);
 
-void valores_livro_chave(lista_c_t *l, FILE *arq);
+void valores_livro_cifra(lista_c_t *l, FILE *livro_cifra);
+
+void valores_arquivo_chaves(lista_c_t *l, FILE *arquivo_chaves);
 
 #endif /* lib_lista_chave */
