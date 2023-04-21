@@ -74,6 +74,7 @@ int existe_chave(lista_c_t *l, char *chave){
 int insere_ini_lista_chave(lista_c_t *l, char chave, char *pos){
     nodo_lc_t *novo;
 
+
     if (vazia_lista_chave(l)){
         if (!(l->ini = malloc(sizeof(nodo_lc_t))))
             return 0;
@@ -107,10 +108,10 @@ int insere_ini_lista_chave(lista_c_t *l, char chave, char *pos){
     Retorna 1 se a chave foi adicionada e 0 caso contrario. */
 int insere_ordem_lista_chave (lista_c_t *l, char chave, char *pos){
     nodo_lc_t *aux, *novo;
-    
+
     if (chave < 0 || chave > 127)
-        return 1;
-       
+        return 0;
+
     if (existe_chave(l, &chave)){
         aux = l->ini;
         while (aux != NULL){
@@ -147,7 +148,7 @@ int insere_ordem_lista_chave (lista_c_t *l, char chave, char *pos){
 }
 
 /* para depuracao */
-void imprime_lista_chave_arq(lista_c_t *l, FILE *arq_destino_chaves){
+void imprime_lista_chave_arq(lista_c_t *l, FILE *arquivo_chaves){
     nodo_lc_t *aux;
 
     if (vazia_lista_chave(l)){
@@ -157,20 +158,22 @@ void imprime_lista_chave_arq(lista_c_t *l, FILE *arq_destino_chaves){
     
     aux = l->ini;
     while (aux != NULL){
-        fprintf(arq_destino_chaves, "%c: ", aux->chave);
-        imprime_lista_pos_arq(aux->lista_pos, arq_destino_chaves);
+        fprintf(arquivo_chaves, "%c: ", aux->chave);
+        imprime_lista_pos_arq(aux->lista_pos, arquivo_chaves);
         aux = aux->prox;
     }
+
+    return;
 }
 
-void valores_livro_chave(lista_c_t *l, FILE *arq){
+void valores_livro_cifra(lista_c_t *l, FILE *livro_cifra){
     int cont_posicao = 0;
     char primeira_letra, *pos, *palavra;
 
     palavra = malloc(sizeof(char)*256);
     pos = malloc(sizeof(char)*256);
 
-    while (fscanf (arq, "%s", palavra) !=  EOF){
+    while (fscanf (livro_cifra, "%s", palavra) !=  EOF){
         primeira_letra = *palavra+0;
         sprintf(pos, "%d", cont_posicao);
         cont_posicao++;
@@ -180,5 +183,24 @@ void valores_livro_chave(lista_c_t *l, FILE *arq){
     free(pos);
     free(palavra);
 
+    return;
+}
+
+void valores_arquivo_chaves(lista_c_t *l, FILE *arquivo_chaves){
+    char *letra_ponto, *pos, chave, teste;
+
+    letra_ponto = malloc(sizeof(char)*3);
+    pos = malloc(sizeof(char)*256);
+
+    while (fscanf (arquivo_chaves, "%s", letra_ponto) !=  EOF){
+        chave = letra_ponto[0];
+        teste = fgetc(arquivo_chaves);
+        while(teste != '\n'){
+            fseek (arquivo_chaves, -1*(sizeof(char)), SEEK_CUR);
+            fscanf(arquivo_chaves, "%s", pos);
+            insere_ordem_lista_chave(l, chave, pos);
+            teste = fgetc(arquivo_chaves);
+        }
+    }
     return;
 }
