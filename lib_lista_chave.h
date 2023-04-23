@@ -40,3 +40,4 @@ void valores_livro_cifra(lista_c_t *l, FILE *livro_cifra);
 void valores_arquivo_chaves(lista_c_t *l, FILE *arquivo_chaves);
 
 #endif /* lib_lista_chave */
+
