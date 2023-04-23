@@ -9,11 +9,28 @@
 
 int main(){
     srand(time(NULL));
-    FILE *arq, *arq_frase, *arq_dst, *arq_decod, *arq_lista, *arq_chaves;
+    FILE *LivroCifra, *MensagemOriginal, *MensagemCodificada, *MensagemDecodificada, *ArquivoDeChaves;
     lista_c_t *lista_chave;
 
     lista_chave = cria_lista_chave();
 
+    /* while ((option = getopt (argc, argv, "edi:b:c:o:")) != -1)
+        switch (option){
+            case 'e':      // option -a was set
+                flag_a = 1;
+                break;
+            case 'd':      // option -b was set
+                flag_b = 1;
+                break;
+            case 'c':      // option -c was set with value
+                value_c = optarg;
+                break;
+        
+            default:
+                printf ("O argumento passado nao e valido");
+            exit (1);
+        }
+  */
     
     if (!(arq = fopen("livro_cifras.txt", "r"))){
         printf("Erro ao abrir arquivo");
