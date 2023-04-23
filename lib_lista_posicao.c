@@ -28,7 +28,7 @@ int vazia_lista_pos(lista_p_t *l){
     return 0;
 }
 
-/*  Destrói uma lista vazia e a retorna, se falhar retorna NULL. */
+/*  Destrói uma lista e retorna NULL. */
 lista_p_t *destroi_lista_pos(lista_p_t *l){
     nodo_lp_t* aux;
     aux = l->ini;
@@ -51,6 +51,33 @@ lista_p_t *destroi_lista_pos(lista_p_t *l){
     free(l);
 
     return NULL;
+}
+
+/*  Função que verifica se existe alguma chave com aquela posição.
+    Retorna 1 se existe e 0 caso contrário */
+int posicao_existe_lista_pos(lista_p_t *l_p, char *chave_pos){
+    int i, igual, tam;
+    nodo_lp_t *aux;
+
+    aux = l_p->ini;
+
+    while (aux != NULL){
+        tam = strlen(chave_pos);
+        igual = 0;
+
+        if (tam == strlen(aux->pos)){
+            for(i = 0; i < tam; i++){
+                if(chave_pos[i] == aux->pos[i])
+                    igual++;
+            }
+            if(igual == tam){
+                return 1;
+            }
+        }
+       aux = aux->prox;
+    }
+
+    return 0;
 }
 
 /*  Copia o valor da posicao em um ponteiro dado. */
