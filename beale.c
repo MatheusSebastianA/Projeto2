@@ -12,7 +12,6 @@
 int arquivo_existe(char *arg){
     FILE *arquivo;
 
-
     if ((arquivo = fopen(arg, "r"))){
         printf("O arquivo %s já existe e não será editado\n", arg);
         if(arquivo != NULL)
@@ -81,27 +80,14 @@ int main(int argc, char **argv){
       }   
 
     if(casoED == 0){
+        if(arquivo_existe(argO) || arquivo_existe(argC))
+            return 1;
+        
         LivroCifra = abre_leitura_arquivo(argB);
         valores_livro_cifra(lista_chave, LivroCifra);
-
-        if(arquivo_existe(argC)){
-            fclose(LivroCifra);
-            destroi_lista_chave(lista_chave);
-            return 1;
-        }
-
         ArquivoDeChaves = abre_escrita_arquivo(argC);
         imprime_lista_chave_arq(lista_chave, ArquivoDeChaves);
         MensagemOriginal = abre_leitura_arquivo(argM);
-
-        if(arquivo_existe(argO)){
-            fclose(LivroCifra);
-            fclose(ArquivoDeChaves);
-            fclose(MensagemOriginal);
-            destroi_lista_chave(lista_chave);
-            return 1;
-        }
-
         MensagemCodificada = abre_escrita_arquivo(argO);
         codifica_arquivo(lista_chave, MensagemOriginal, MensagemCodificada);
 
@@ -113,17 +99,12 @@ int main(int argc, char **argv){
     
     else{
         if(argC != NULL){
+            if(arquivo_existe(argO))
+                return 1;
+
             ArquivoDeChaves = abre_leitura_arquivo(argC);
             valores_arquivo_chaves(lista_chave, ArquivoDeChaves);
             MensagemCodificada = abre_leitura_arquivo(argI);
-
-            if(arquivo_existe(argO)){
-                fclose(ArquivoDeChaves);
-                fclose(MensagemCodificada);
-                destroi_lista_chave(lista_chave);
-                return 1;
-            }
-                
             MensagemDecodificada = abre_escrita_arquivo(argO);
             decodifica_arquivo(lista_chave, MensagemCodificada, MensagemDecodificada);
         
@@ -133,17 +114,12 @@ int main(int argc, char **argv){
         }
 
         else{
+            if(arquivo_existe(argO))
+                return 1;
+
             LivroCifra = abre_leitura_arquivo(argB);
             valores_livro_cifra(lista_chave, LivroCifra);
             MensagemCodificada = abre_leitura_arquivo(argI);
-
-            if(arquivo_existe(argO)){
-                fclose(LivroCifra);
-                fclose(MensagemCodificada);
-                destroi_lista_chave(lista_chave);
-                return 1;
-            }
-
             MensagemDecodificada = abre_escrita_arquivo(argO);
             decodifica_arquivo(lista_chave, MensagemCodificada, MensagemDecodificada);
 
