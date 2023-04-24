@@ -1,98 +1,143 @@
-#include <stdlib.h>
+#include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <getopt.h>
 #include <string.h>
+#include <time.h>
 #include "lib_lista_chave.h"
 #include "lib_lista_posicao.h"
 #include "codifica.h"
 #include "decodifica.h"
-#include <time.h>
 
-int main(){
+int arquivo_existe(char *arg){
+    FILE *arquivo;
+
+
+    if ((arquivo = fopen(arg, "r"))){
+        printf("O arquivo %s já existe e não será editado\n", arg);
+        if(arquivo != NULL)
+            fclose(arquivo);
+        return 1;
+    }
+
+    return 0;
+}
+
+FILE* abre_leitura_arquivo(char* arg){
+    FILE* arquivo = fopen(arg, "r"); 
+    if (arquivo == NULL) {
+        printf("Não foi possível abrir o arquivo %s.\n", arg);
+        exit(1);
+    }
+
+    return arquivo;
+}
+
+FILE* abre_escrita_arquivo(char* arg){
+    FILE* arquivo = fopen(arg, "w"); 
+    if (arquivo == NULL) {
+        printf("Não foi possível abrir o arquivo %s \n", arg);
+        exit(1);
+    }
+
+    return arquivo;
+}
+
+int main(int argc, char **argv){
     srand(time(NULL));
-    FILE *LivroCifra, *MensagemOriginal, *MensagemCodificada, *MensagemDecodificada, *ArquivoDeChaves;
+    int option, casoED;
+    char *argB = NULL, *argM = NULL, *argO = NULL, *argC = NULL, *argI = NULL;
+    FILE *LivroCifra = NULL, *MensagemOriginal = NULL, *ArquivoDeChaves = NULL, *MensagemDecodificada = NULL, *MensagemCodificada = NULL;
     lista_c_t *lista_chave;
+    
 
     lista_chave = cria_lista_chave();
 
-    /* while ((option = getopt (argc, argv, "edi:b:c:o:")) != -1)
+    while ((option = getopt (argc, argv, "edb:m:o:c:i:")) != -1)
         switch (option){
-            case 'e':      // option -a was set
-                flag_a = 1;
+            case 'e':
+                casoED = 0;
                 break;
-            case 'd':      // option -b was set
-                flag_b = 1;
+            case 'd':
+                casoED = 1;
                 break;
-            case 'c':      // option -c was set with value
-                value_c = optarg;
+            case 'b':
+                argB = optarg;
                 break;
-        
+            case 'm':
+                argM = optarg;
+                break;
+            case 'o':
+                argO = optarg;
+                break;
+            case 'c':
+                argC = optarg;
+                break;
+            case 'i':
+                argI = optarg;
+                break;
             default:
-                printf ("O argumento passado nao e valido");
-            exit (1);
+                printf ("O argumento passado não é válido\n");
+	            return (1);
+      }   
+
+    if(casoED == 0){
+        LivroCifra = abre_leitura_arquivo(argB);
+        valores_livro_cifra(lista_chave, LivroCifra);
+
+        if(arquivo_existe(argC))
+            return 1;
+
+        ArquivoDeChaves = abre_escrita_arquivo(argC);
+        imprime_lista_chave_arq(lista_chave, ArquivoDeChaves);
+        MensagemOriginal = abre_leitura_arquivo(argM);
+
+        if(arquivo_existe(argO))
+            return 1;
+
+
+        MensagemCodificada = abre_escrita_arquivo(argO);
+        codifica_arquivo(lista_chave, MensagemOriginal, MensagemCodificada);
+
+        fclose(LivroCifra);
+        fclose(ArquivoDeChaves);
+        fclose(MensagemOriginal);
+        fclose(MensagemCodificada);
+    }
+    
+    else{
+        if(argC != NULL){
+            ArquivoDeChaves = abre_leitura_arquivo(argC);
+            valores_arquivo_chaves(lista_chave, ArquivoDeChaves);
+            MensagemCodificada = abre_leitura_arquivo(argI);
+            if(arquivo_existe(argO))
+                return 1;
+            
+            MensagemDecodificada = abre_escrita_arquivo(argO);
+            decodifica_arquivo(lista_chave, MensagemCodificada, MensagemDecodificada);
+        
+            fclose(ArquivoDeChaves);
+            fclose(MensagemDecodificada);
+            fclose(MensagemCodificada);
         }
-  */
+
+        else{
+            LivroCifra = abre_leitura_arquivo(argB);
+            valores_livro_cifra(lista_chave, LivroCifra);
+            MensagemCodificada = abre_leitura_arquivo(argI);
+            if(arquivo_existe(argO))
+                return 1;
+
+            MensagemDecodificada = abre_escrita_arquivo(argO);
+            decodifica_arquivo(lista_chave, MensagemCodificada, MensagemDecodificada);
+
+            fclose(LivroCifra);
+            fclose(MensagemCodificada);
+            fclose(MensagemDecodificada);
+        }
+    }
+
     
-    if (!(arq = fopen("livro_cifras.txt", "r"))){
-        printf("Erro ao abrir arquivo");
-        return 0;
-    }
-
-    valores_livro_cifra(lista_chave, arq);
-
-
-    if (!(arq_chaves = fopen("arq_chaves.txt", "r"))){
-        printf("Erro ao abrir arquivo");
-        return 0;
-    }
-
-    valores_arquivo_chaves(lista_chave, arq_chaves); 
-
-    if (!(arq_decod = fopen("frase_deco.txt", "w"))){
-        printf("Erro ao abrir arquivo");
-        return 0;
-    }
-
-    if (!(arq_lista = fopen("Chaves.txt", "w"))){
-        printf("Erro ao abrir arquivo");
-        return 0;
-    }
-
-    imprime_lista_chave_arq(lista_chave, arq_lista);
-    
-    if (!(arq_frase = fopen("frase.txt", "r"))){
-        printf("Erro ao abrir arquivo");
-        return 0;
-    }
-
-    if (!(arq_dst = fopen("frase_cod.txt", "w"))){
-        printf("Erro ao abrir arquivo");
-        return 0;
-    }
-
-    codifica_arquivo(lista_chave, arq_frase, arq_dst);
-
-    fclose(arq_dst);
-    fclose(arq_decod);
-
-    if (!(arq_decod = fopen("frase_deco.txt", "w"))){
-        printf("Erro ao abrir arquivo");
-        return 0;
-    }
-
-    if (!(arq_dst = fopen("frase_cod.txt", "r")) ){
-        printf("Erro ao abrir arquivo");
-        return 0;
-    }
-
-    decodifica_arquivo(lista_chave, arq_dst, arq_decod);
-    
-
-    fclose(arq);
-    fclose(arq_chaves);
-    fclose(arq_frase);
-    fclose(arq_decod);
-    fclose(arq_dst);
-    fclose(arq_lista);
     destroi_lista_chave(lista_chave);
-    return 0;
+    return 0; 
 }  
