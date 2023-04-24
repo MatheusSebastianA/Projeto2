@@ -49,7 +49,6 @@ int main(int argc, char **argv){
     FILE *LivroCifra = NULL, *MensagemOriginal = NULL, *ArquivoDeChaves = NULL, *MensagemDecodificada = NULL, *MensagemCodificada = NULL;
     lista_c_t *lista_chave;
 
-    lista_chave = cria_lista_chave();
 
     while ((option = getopt (argc, argv, "edb:m:o:c:i:")) != -1)
         switch (option){
@@ -84,6 +83,8 @@ int main(int argc, char **argv){
             return 1;
         
         LivroCifra = abre_leitura_arquivo(argB);
+        lista_chave = cria_lista_chave();
+
         valores_livro_cifra(lista_chave, LivroCifra);
         ArquivoDeChaves = abre_escrita_arquivo(argC);
         imprime_lista_chave_arq(lista_chave, ArquivoDeChaves);
@@ -103,6 +104,8 @@ int main(int argc, char **argv){
                 return 1;
 
             ArquivoDeChaves = abre_leitura_arquivo(argC);
+            lista_chave = cria_lista_chave();
+
             valores_arquivo_chaves(lista_chave, ArquivoDeChaves);
             MensagemCodificada = abre_leitura_arquivo(argI);
             MensagemDecodificada = abre_escrita_arquivo(argO);
@@ -118,6 +121,8 @@ int main(int argc, char **argv){
                 return 1;
 
             LivroCifra = abre_leitura_arquivo(argB);
+            lista_chave = cria_lista_chave();
+            
             valores_livro_cifra(lista_chave, LivroCifra);
             MensagemCodificada = abre_leitura_arquivo(argI);
             MensagemDecodificada = abre_escrita_arquivo(argO);
@@ -128,7 +133,6 @@ int main(int argc, char **argv){
             fclose(MensagemDecodificada);
         }
     }
-
     
     destroi_lista_chave(lista_chave);
     return 0; 
