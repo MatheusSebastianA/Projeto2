@@ -27,7 +27,7 @@ beale.o: beale.c
 	$(CC) -c $(CFLAGS) beale.c
 
 clean:
-	rm -f $(objects) mundo
+	rm -f $(objects) beale
 
 purge:
 	rm *.o beale
