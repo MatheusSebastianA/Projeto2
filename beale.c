@@ -133,7 +133,7 @@ int main(int argc, char **argv){
             fclose(MensagemDecodificada);
         }
     }
-    
     destroi_lista_chave(lista_chave);
+	
     return 0; 
 }  
