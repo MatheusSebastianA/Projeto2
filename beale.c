@@ -79,7 +79,7 @@ int main(int argc, char **argv){
       }   
 
     if(casoED == 0){
-        if(arquivo_existe(argC))
+        if(arquivo_existe(argC) || arquivo_existe(argO))
             return 1;
         
         LivroCifra = abre_leitura_arquivo(argB);
