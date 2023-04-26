@@ -23,6 +23,8 @@ int codifica_caractere(lista_c_t *l, char c, char *c_cod){
         return 1;
     }
 
+    if(*c >= 'A' && *c <= 'Z') /* Se for letra maíscula ela é transformada em minúscula  */
+        *c += 32;
     
     while (aux != NULL){
         if (aux->chave == c){ /* Se a chave atual for igual a chave procurada entra no laço e pega a quantidade de posições dessa chave */
