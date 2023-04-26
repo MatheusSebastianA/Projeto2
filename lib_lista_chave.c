@@ -197,14 +197,11 @@ void valores_arquivo_chaves(lista_c_t *l, FILE *arquivo_chaves){
 
     while (fscanf (arquivo_chaves, "%s", letra_ponto) !=  EOF){ /* enquanto tiverem palavras no arquivo entrará no seguinte laço*/
         chave = letra_ponto[0]; /* chave recebe o valor da primeira palavra que sempre será "chave": e atribui o primeiro valor para chave */
-        teste = fgetc(arquivo_chaves); /* Passa pelo espaço que existe a cada posição */
         teste = fgetc(arquivo_chaves); /* se o próximo valor valer '\n' é porque acabaram as posições dessa chave */
         while(teste != '\n'){
-            fseek (arquivo_chaves, -2*(sizeof(char)), SEEK_CUR); /* volta duas posições já que o teste verifica se depois do espaço existe um \n */
             fscanf(arquivo_chaves, "%s", pos); /* le o próximo valor que representa uma posição */
             insere_ordem_lista_chave(l, chave, pos); /* insere a chave a posição atual na lista de chaves */
-            teste = fgetc(arquivo_chaves); /* Passa pelo espaço que existe a cada posição */
-            teste = fgetc(arquivo_chaves); /* se o próximo valor valer '\n' é porque acabaram as posições dessa chave */
+            teste = fgetc(arquivo_chaves); /* insere a chave a posição atual na lista de chaves */
         }
     }
 
