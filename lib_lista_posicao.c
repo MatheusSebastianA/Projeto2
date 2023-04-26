@@ -56,50 +56,25 @@ lista_p_t *destroi_lista_pos(lista_p_t *l){
 /*  Função que verifica se existe alguma chave com aquela posição.
     Retorna 1 se existe e 0 caso contrário */
 int posicao_existe_lista_pos(lista_p_t *l_p, char *chave_pos){
-    int ini, meio, fim, tam;
-    nodo_lp_t *aux_ini, *aux;
+    int i, igual, tam;
+    nodo_lp_t *aux;
 
-    ini = 1;
-    tam =  l_p->tamanho;
-    fim = tam;
-    aux_ini = l_p->ini;
     aux = l_p->ini;
 
-    while (ini <= fim){
-        if (ini == fim){
-            if (atoi(aux->pos) == atoi(chave_pos))
+    while (aux != NULL){
+        tam = strlen(chave_pos);
+        igual = 0;
+
+        if (tam == strlen(aux->pos)){
+            for(i = 0; i < tam; i++){
+                if(chave_pos[i] == aux->pos[i])
+                    igual++;
+            }
+            if(igual == tam){
                 return 1;
-            else
-                return 0;
+            }
         }
-
-        meio = (ini+fim)/2;
-        for(ini = ini; ini < meio; ini++)
-            if (aux->prox != NULL)
-                aux = aux->prox;
-
-        if (atoi(aux->pos) == atoi(chave_pos)){
-            return 1;
-        }
-
-        else if (atoi(aux->pos) > atoi(chave_pos)){
-            if (aux->prox != NULL)
-                aux = aux->prox;
-            ini = meio + 1;
-        }
-
-        else{
-            aux = aux_ini;
-            fim = meio - 1;
-            for(ini = 1; ini < fim; ini++)
-                aux = aux->prox;
-            if (atoi(aux->pos) > atoi(chave_pos))
-                return 0;
-
-            aux = aux_ini;
-            fim = meio - 1;
-            ini = 1;
-        }
+       aux = aux->prox;
     }
 
     return 0;
