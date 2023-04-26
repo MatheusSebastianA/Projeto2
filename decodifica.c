@@ -22,7 +22,7 @@ void decodifica_caractere(lista_c_t *l, char *chave_pos, char *c_decod){
         *c_decod = '-';
         return;
     }
-    
+
     aux_chave = l->ini;
 
     while(aux_chave != NULL){ /*Laço que passa por todas as chaves*/
@@ -34,7 +34,7 @@ void decodifica_caractere(lista_c_t *l, char *chave_pos, char *c_decod){
     }
 
     *c_decod = '-'; /* Se não for encontrado retorna '-' para representar que o caractere não existe*/
-    
+
     return;
 }
 
@@ -47,7 +47,7 @@ void decodifica_arquivo(lista_c_t *l, FILE *mensagem_codificada, FILE *mensagem_
         return;
 
     while(fscanf(mensagem_codificada, "%s", num_pos) != EOF){ /* Enquanto tiver uma palavra, será decodificado a string lida do arquivo */
-        decodifica_caractere(l, num_pos, &letra_decod); 
+        decodifica_caractere(l, num_pos, &letra_decod);
         fprintf(mensagem_decodificada, "%c", letra_decod); /* Insere valor decodificado no arquivo de mensagem decodificada */
     }
 
