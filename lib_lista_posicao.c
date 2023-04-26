@@ -152,7 +152,7 @@ void imprime_lista_pos_arq(lista_p_t *l, FILE *arq_destino_chaves){
     aux = l->ini;
     while (aux != NULL){
         if (aux->prox == NULL)
-            fprintf(arq_destino_chaves, "%s\n", aux->pos);
+            fprintf(arq_destino_chaves, "%s \n", aux->pos);
         else
             fprintf(arq_destino_chaves, "%s ", aux->pos);
         aux = aux->prox;
