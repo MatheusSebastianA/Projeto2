@@ -33,6 +33,8 @@ void decodifica_caractere(lista_c_t *l, char *chave_pos, char *c_decod){
         aux_chave = aux_chave->prox;
     }
 
+    *c_decod = '-'; /* Se não for encontrado retorna '-' para representar que o caractere não existe*/
+    
     return;
 }
 
