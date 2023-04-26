@@ -3,7 +3,7 @@
 #include <string.h>
 #include "lib_lista_chave.h"
 
-//*  Cria uma lista vazia e a retorna, se falhar retorna NULL. */
+//*  Cria uma lista de chaves vazia e a retorna, se falhar retorna NULL. */
 lista_c_t *cria_lista_chave(){
     lista_c_t *l;
     if (!(l = malloc(sizeof(lista_c_t))))
@@ -20,7 +20,7 @@ int tamanho_lista_chave(lista_c_t *l){
     return l->tamanho;
 }
 
-/*  Retorna 1 se a lista está vazia ou 0 caso contrário */
+/*  Retorna 1 se a lista de chaves está vazia ou 0 caso contrário */
 int vazia_lista_chave(lista_c_t *l){
     if (tamanho_lista_chave(l) == 0)
         return 1;
@@ -28,7 +28,7 @@ int vazia_lista_chave(lista_c_t *l){
     return 0;
 }
 
-/*  Destrói uma lista e retorna NULL. */
+/*  Destrói uma lista de chaves e a lista de posição de cada chave, retorna NULL. */
 lista_c_t *destroi_lista_chave(lista_c_t *l){
     nodo_lc_t* aux;
     aux = l->ini;
@@ -71,7 +71,7 @@ int existe_chave(lista_c_t *l, char *chave){
     return 0;
 }
 
-/*  Insere a chave na lista.
+/*  Insere a chave na lista de chaves.
     Retorna 1 se a operacao foi bem sucedida e 0 caso contrario. */
 int insere_ini_lista_chave(lista_c_t *l, char chave, char *pos){
     nodo_lc_t *novo;
@@ -105,7 +105,7 @@ int insere_ini_lista_chave(lista_c_t *l, char chave, char *pos){
 }
 
 
-/*  Insere a chave pela ordem.
+/*  Insere a chave pela ordem na lista de chaves.
     Retorna 1 se a chave foi adicionada e 0 caso contrario. */
 int insere_ordem_lista_chave (lista_c_t *l, char chave, char *pos){
     nodo_lc_t *aux, *novo;
