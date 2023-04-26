@@ -18,6 +18,11 @@ void decodifica_caractere(lista_c_t *l, char *chave_pos, char *c_decod){
         return;
     }
     
+    if (chave_pos[0] == '-' && chave_pos[1] == '3'){ /* Se for encontrado -3 retorna '-' para representar que o caractere não existe*/
+        *c_decod = '-';
+        return;
+    }
+    
     aux_chave = l->ini;
 
     while(aux_chave != NULL){ /*Laço que passa por todas as chaves*/
@@ -27,8 +32,6 @@ void decodifica_caractere(lista_c_t *l, char *chave_pos, char *c_decod){
         }
         aux_chave = aux_chave->prox;
     }
-
-    *c_decod = '-'; /* Caso não tenha sido encontrado a posição é retornado "-" para representar que não foi encontrado (valor -3 por exemplo) */
 
     return;
 }
