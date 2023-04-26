@@ -3,7 +3,7 @@
 #include <string.h>
 #include "lib_lista_posicao.h"
 
-//*  Cria uma lista vazia e a retorna, se falhar retorna NULL. */
+/*  Cria uma lista vazia de posições e a retorna, se falhar retorna NULL. */
 lista_p_t *cria_lista_pos(){
     lista_p_t *l;
     if (!(l = malloc(sizeof(lista_p_t))))
@@ -15,12 +15,12 @@ lista_p_t *cria_lista_pos(){
     return l;
 }
 
-/*  Retorna o numero de poss da lista. */
+/*  Retorna o numero de posições da lista de posições. */
 int tamanho_lista_pos(lista_p_t *l){
     return l->tamanho;
 }
 
-/*  Retorna 1 se a lista está vazia ou 0 caso contrário */
+/*  Retorna 1 se a lista de posições está vazia ou 0 caso contrário */
 int vazia_lista_pos(lista_p_t *l){
     if (tamanho_lista_pos(l) == 0)
         return 1;
@@ -28,7 +28,7 @@ int vazia_lista_pos(lista_p_t *l){
     return 0;
 }
 
-/*  Destrói uma lista e retorna NULL. */
+/*  Destrói uma lista de posições e retorna NULL. */
 lista_p_t *destroi_lista_pos(lista_p_t *l){
     nodo_lp_t* aux;
     aux = l->ini;
@@ -83,7 +83,7 @@ void copia_pos(char *pos, char *pos_copia){
     return;
 }
 
-/*  Insere a pos na lista.
+/*  Insere a posição no inicio da lista de posições.
     Retorna 1 se a operacao foi bem sucedida e 0 caso contrario. */
 int insere_ini_lista_pos(lista_p_t *l, char *pos){
     nodo_lp_t *novo;
@@ -112,8 +112,8 @@ int insere_ini_lista_pos(lista_p_t *l, char *pos){
     return 1;
 }
 
-/*  Insere a pos pela ordem.
-    Retorna 1 se a pos foi adicionada e 0 caso contrario. */
+/*  Insere a posição em ordem decrescente.
+    Retorna 1 se a posição foi adicionada e 0 caso contrário. */
 int insere_ordem_lista_pos (lista_p_t *l, char *pos){
     nodo_lp_t *aux, *novo;
 
@@ -139,6 +139,8 @@ int insere_ordem_lista_pos (lista_p_t *l, char *pos){
     return 1;
 }
 
+/*  Insere a lista de posições em ordem decrescente em um arquivo de destino.
+    Os valores são inseridos em ordem decrescente */
 void imprime_lista_pos_arq(lista_p_t *l, FILE *arq_destino_chaves){
     nodo_lp_t *aux;
 
