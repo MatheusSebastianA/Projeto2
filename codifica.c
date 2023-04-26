@@ -55,7 +55,8 @@ int codifica_caractere(lista_c_t *l, char c, char *c_cod){
             }
             return 1;
         }
-    aux = aux->prox;
+        
+        aux = aux->prox;
     }
 
     /* Se não for encontrado nenhuma caractere = -3 */
