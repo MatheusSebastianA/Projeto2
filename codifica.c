@@ -1,3 +1,9 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include "codifica.h"
+
 /*  Codifica carectere por caractere.
     Espaço = -1
     \n = -2
@@ -57,7 +63,7 @@ int codifica_caractere(lista_c_t *l, char c, char *c_cod){
             }
             return 1;
         }
-        
+
         aux = aux->prox;
     }
 
@@ -67,4 +73,25 @@ int codifica_caractere(lista_c_t *l, char c, char *c_cod){
     c_cod[2] = '\0';
 
     return 0;
+}
+
+/*  Codifica o arquivo inteiro com a mensagem original e escreve ela codificada em um arquivo de mensagem codificada.
+    Quem chamou a função deve abrir e fechar o arquivo */
+void codifica_arquivo(lista_c_t *l, FILE *mensagem_original, FILE *mensagem_codificada){
+    char *letra_cod, c;
+
+    letra_cod = malloc(sizeof(char)*16);
+
+    c = fgetc(mensagem_original); /* pega primeiro caracter do arquivo com a mensagem original*/ 
+    while ( c != EOF){  /* enquanto o caractere não for EOF entra no laço */
+        codifica_caractere(l, c, letra_cod); /* codifica o caractere atual */
+        fprintf(mensagem_codificada, "%s ", letra_cod); /* insere o valor codificado no arquivo de mensagem codificada */
+        
+        c = fgetc(mensagem_original); /* pega próximo caracter do arquivo */
+    
+    }
+
+    free(letra_cod);
+
+    return;
 }
