@@ -45,7 +45,7 @@ int codifica_caractere(lista_c_t *l, char c, char *c_cod){
                 cont = rand() % (cont-1);
                 aux_ini_pos = aux->lista_pos->ini;
                 for (i = 0; i < cont; i++){ /* Será acessado a posição na posição aleatoriamente sorteada */        
-                        aux_ini_pos = aux_ini_pos->prox;
+                    aux_ini_pos = aux_ini_pos->prox;
                 }
             }
             tam = strlen(aux_ini_pos->pos);
