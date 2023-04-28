@@ -43,7 +43,7 @@ void decodifica_caractere(lista_c_t *l, char *chave_pos, char *c_decod){
 void decodifica_arquivo(lista_c_t *l, FILE *mensagem_codificada, FILE *mensagem_decodificada){
     char *num_pos, letra_decod;
 
-    if(!(num_pos = malloc(sizeof(char)*256)))
+    if(!(num_pos = malloc(sizeof(char)*16)))
         return;
 
     while(fscanf(mensagem_codificada, "%s", num_pos) != EOF){ /* Enquanto tiver uma palavra, será decodificado a string lida do arquivo */
