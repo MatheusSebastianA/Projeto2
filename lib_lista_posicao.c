@@ -61,7 +61,7 @@ int posicao_existe_lista_pos(lista_p_t *l_p, char *chave_pos){
     aux = l_p->ini;
 
     while (aux != NULL){
-        if(atoi(aux->pos) == atoi(chave_pos))
+        if(atoi(aux->pos) == atoi(chave_pos))  
             return 1;
         
         aux = aux->prox;
