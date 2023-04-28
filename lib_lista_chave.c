@@ -173,7 +173,7 @@ void valores_livro_cifra(lista_c_t *l, FILE *livro_cifra){
     char primeira_letra, *pos, *palavra;
 
     palavra = malloc(sizeof(char)*256);
-    pos = malloc(sizeof(char)*256);
+    pos = malloc(sizeof(char)*16);
 
     while (fscanf (livro_cifra, "%s", palavra) !=  EOF){ /* pega próxima palavra até que seja EOF */
         primeira_letra = *palavra+0; /* pega a primeira letra da palavra  */
@@ -193,7 +193,7 @@ void valores_arquivo_chaves(lista_c_t *l, FILE *arquivo_chaves){
     char *letra_ponto, *pos, chave, teste;
 
     letra_ponto = malloc(sizeof(char)*3);
-    pos = malloc(sizeof(char)*256);
+    pos = malloc(sizeof(char)*16);
 
     while (fscanf (arquivo_chaves, "%s", letra_ponto) !=  EOF){ /* enquanto tiverem palavras no arquivo entrará no seguinte laço*/
         chave = letra_ponto[0]; /* chave recebe o valor da primeira palavra que sempre será "chave": e atribui o primeiro valor para chave */
