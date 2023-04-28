@@ -58,7 +58,7 @@ int main(int argc, char **argv){
         return 1;
     }
 
-    if(casoE == 1 && argB != NULL && argM != NULL && argO != NULL){ /* verifica se foi estamos */
+    if(casoE == 1 && argB != NULL && argM != NULL && argO != NULL){ /* verifica se está no caso -e e se todos os argumentos necessários foram passados */
         quantidade_arquivo_passado(qnt_arquivos, argB, argM, argO, argC, argI);
 
         if((arquivo_existe(argC)))
@@ -81,7 +81,7 @@ int main(int argc, char **argv){
     }
     
     else{
-        if(argC != NULL && argI != NULL && argO != NULL){
+        if(argC != NULL && argI != NULL && argO != NULL){ /* Significa que está no caso -d e se todos os argumentos necessários para decodificar a partir de um arquivo de chaves foram passados */
             quantidade_arquivo_passado(qnt_arquivos, argB, argM, argO, argC, argI);   
 
             if(arquivo_existe(argO))
@@ -100,10 +100,10 @@ int main(int argc, char **argv){
             fclose(MensagemCodificada);
         }
 
-        else{
-            if(argB != NULL && argI != NULL && argO != NULL){
+        else{ /* Significa que está no caso -d  */
+            if(argB != NULL && argI != NULL && argO != NULL){ /* verifica se todos os argumentos necessários para decodificar a partir de um livro de cifra foram passados */
                 quantidade_arquivo_passado(qnt_arquivos, argB, argM, argO, argC, argI); 
-                
+
                 if(arquivo_existe(argO))
                     return 1;
 
@@ -124,7 +124,7 @@ int main(int argc, char **argv){
             else{
                 printf("A quantidade de argumentos passados é inválida\n");
                 return 0;
-        }
+            }
         }
 
         
