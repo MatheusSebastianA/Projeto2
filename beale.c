@@ -53,15 +53,18 @@ int main(int argc, char **argv){
 
 
 
-    if(casoE + casoD != 1){ /*verifica se foi passado mais de um -e ou -d*/
+    if(casoE + casoD != 1){ /* Verifica se foi passado mais de um -e ou -d*/
         printf("A quantidade de argumentos '-e' ou '-d' é inválida\n");
         return 1;
     }
 
-    if(casoE == 1 && argB != NULL && argM != NULL && argO != NULL){ /* verifica se está no caso -e e se todos os argumentos necessários foram passados */
+    if(casoE == 1 && argB != NULL && argM != NULL && argO != NULL && argO != NULL){ /* Verifica se está no caso -e e se todos os argumentos necessários foram passados */
         quantidade_arquivo_passado(qnt_arquivos, argB, argM, argO, argC, argI);
 
-        if((arquivo_existe(argC)))
+        if((arquivo_nao_existe(argB) || arquivo_nao_existe(argM))) /* Verifica se não existe o arquivo de livro cifra ou da mensagem original, se não existir termina o programa */
+            return 1;
+
+        if((arquivo_existe(argC) || arquivo_existe(argO))) /* Verifica se já existe o arquivo de chaves ou de mensagem codificada, se sim termina o programa */
             return 1;
 
         LivroCifra = abre_leitura_arquivo(argB);
@@ -81,10 +84,13 @@ int main(int argc, char **argv){
     }
     
     else{
-        if(argC != NULL && argI != NULL && argO != NULL){ /* Significa que está no caso -d e se todos os argumentos necessários para decodificar a partir de um arquivo de chaves foram passados */
+        if(casoD == 1 && argC != NULL && argI != NULL && argO != NULL){ /* Significa que está no caso -d e se todos os argumentos necessários para decodificar a partir de um arquivo de chaves foram passados */
             quantidade_arquivo_passado(qnt_arquivos, argB, argM, argO, argC, argI);   
 
-            if(arquivo_existe(argO))
+            if((arquivo_nao_existe(argC) || arquivo_nao_existe(argI))) /* Verifica se não existe o arquivo de chaves ou da mensagem codificada, se não existir termina o programa */
+                return 1;
+
+            if(arquivo_existe(argO)) /* Verifica se já existe o arquivo de mensagem decodificada, se sim termina o programa */
                 return 1;
             
             ArquivoDeChaves = abre_leitura_arquivo(argC);
@@ -101,10 +107,13 @@ int main(int argc, char **argv){
         }
 
         else{ /* Significa que está no caso -d  */
-            if(argB != NULL && argI != NULL && argO != NULL){ /* verifica se todos os argumentos necessários para decodificar a partir de um livro de cifra foram passados */
+            if(casoD == 1 && argB != NULL && argI != NULL && argO != NULL){ /* verifica se todos os argumentos necessários para decodificar a partir de um livro de cifra foram passados */
                 quantidade_arquivo_passado(qnt_arquivos, argB, argM, argO, argC, argI); 
 
-                if(arquivo_existe(argO))
+                if((arquivo_nao_existe(argB) || arquivo_nao_existe(argI))) /* Verifica se não existe o arquivo de livro cifra ou da mensagem codificada, se não existir termina o programa */
+                    return 1;
+
+                if(arquivo_existe(argO)) /* Verifica se já existe o arquivo de mensagem decodificada, se sim termina o programa */
                     return 1;
 
                 LivroCifra = abre_leitura_arquivo(argB);
