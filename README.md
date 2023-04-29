@@ -2,13 +2,13 @@ Aluno: Matheus Sebastian Alencar de Carvalho
 GRR: 20220065
 
 
-O trabalho foi dividido em 6 módulos. 
+O trabalho foi dividido em 5 módulos. 
 Lib_lista_chave: Essa biblioteca é responsável pela criação, inserção ordenada, destruição, impressão em um arquivo de destino e recebimento de uma lista de chaves(a partir de um livro cifra ou a partir de um arquivo de chaves). A impressão e recebimento da lista trata também as listas de posições de cada chave.
 Lib_lista_posicao:  Essa biblioteca é responsável pela criação, inserção ordenada e destruição de uma lista de posições. 
 Lib_trata_arquivo: Essa biblioteca é utilizada apenas no Beale.c, onde é feito o tratamento de arquivos passados. Se já existirem não serão editados.
 Codifica: Essa biblioteca é responsável por codificar um caracater isolado e um arquivo inteiro.
 Decodifica: Essa biblioteca é responsável por decodificar um caracater isolado e um arquivo inteiro.
-Beale: Main onde serão passados os argumentos, que ocasionam mensagens de erro caso o arquivo já exista ou se os argumentos passados sejam inválidos. Além disso, é no main que será tratado se será feita uma codificação, decodificação por meio de um livro de cifra ou por meio de um arquivo de chaves. 
+ 
 
 
 O trabalho foi feito por meio da implementação de duas listas ligadas, uma para as chaves (caracteres) e outra para representar as posições de cada chave, que serão os códigos de cada chave encontrada.
@@ -41,4 +41,5 @@ Se for um "-3", representa um caractere desconhecido e será codificado como o c
 Se a decodificação não entrou em nenhum desses casos, passará por todas as chaves e será verificado se a posição existe na lista da chave atual, caso exista a posição nessa chave, ela representará o caractere decodificado. Se após passar por todas as chaves ainda não encontrou o valor passado, significa que essa posição não existe na lista atual (Pode acontecer caso uma mensagem codificada tente ser decodificada por um arquivo de chaves que não apresente aquela posição) e será codificado como o carctere '-'.
 
 
-O tratamento dos arquivos apresenta 3 funções, uma que verifica se o arquivo já existe, todos os arquivos que serão acessados para escrita passam por essa verificação, e, por segurança, o programa é finalizado e nada será feito, apenas a liberação de arquivos que foram abertos para teste. Se for passado mais de um arquivo válido igual, como dois -c ArquivoDeChaves e -c ArquivoDechave, será mostrado uma mensagem avisando e será considerado o último arquivo enviado. Se for passado algum arquivo que não será utilizado não será apresentada nenhuma mensagem de erro já que não causa nenhum problema.
+A biblioteca de tratamento dos arquivos apresenta 4 funções, uma que verifica se o arquivo já existe, se todos os arquivos que serão acessados para escrita passam por essa verificação, e, por segurança, o programa é finalizado e nada será feito, apenas a liberação de arquivos que foram abertos para teste. Se for passado mais de um arquivo válido igual, como dois -c ArquivoDeChaves e -c ArquivoDechave, será mostrado uma mensagem avisando e será considerado o último arquivo enviado. Se for passado algum arquivo que não será utilizado não será apresentada nenhuma mensagem de erro já que não causa nenhum problema.
+Em caso de abertura de um arquivo que não existe o programa é finalizado.
