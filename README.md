@@ -8,8 +8,6 @@ Lib_lista_posicao:  Essa biblioteca é responsável pela criação, inserção o
 Lib_trata_arquivo: Essa biblioteca é utilizada apenas no Beale.c, onde é feito o tratamento de arquivos passados. Se já existirem não serão editados.
 Codifica: Essa biblioteca é responsável por codificar um caracater isolado e um arquivo inteiro.
 Decodifica: Essa biblioteca é responsável por decodificar um caracater isolado e um arquivo inteiro.
- 
-
 
 O trabalho foi feito por meio da implementação de duas listas ligadas, uma para as chaves (caracteres) e outra para representar as posições de cada chave, que serão os códigos de cada chave encontrada.
 
@@ -34,12 +32,16 @@ Se for encontrada uma chave que representa o caractere a ser codificado, caso o 
 
 
 A parte da decodificação é feita da seguinte maneira: É passado uma string (caractere codificado) e ela é verificada em três opções:
-Se for um "-1", representa um espaço e será codificado como o caractere ' ';
-Se for um "-2", representa uma quebra de linha e será codificado como o caractere '\n';
-Se for um "-3", representa um caractere desconhecido e será codificado como o caractere '-';
+Se for um "-1", representa um espaço e será decodificado como o caractere ' ';
+Se for um "-2", representa uma quebra de linha e será decodificado como o caractere '\n';
+Se for um "-3", representa um caractere desconhecido e será decodificado como o caractere '-';
 
 Se a decodificação não entrou em nenhum desses casos, passará por todas as chaves e será verificado se a posição existe na lista da chave atual, caso exista a posição nessa chave, ela representará o caractere decodificado. Se após passar por todas as chaves ainda não encontrou o valor passado, significa que essa posição não existe na lista atual (Pode acontecer caso uma mensagem codificada tente ser decodificada por um arquivo de chaves que não apresente aquela posição) e será codificado como o carctere '-'.
 
 
-A biblioteca de tratamento dos arquivos apresenta 4 funções, uma que verifica se o arquivo já existe, se todos os arquivos que serão acessados para escrita passam por essa verificação, e, por segurança, o programa é finalizado e nada será feito, apenas a liberação de arquivos que foram abertos para teste. Se for passado mais de um arquivo válido igual, como dois -c ArquivoDeChaves e -c ArquivoDechave, será mostrado uma mensagem avisando e será considerado o último arquivo enviado. Se for passado algum arquivo que não será utilizado não será apresentada nenhuma mensagem de erro já que não causa nenhum problema.
-Em caso de abertura de um arquivo que não existe o programa é finalizado.
+A biblioteca de tratamento dos arquivos apresenta 5 funções:
+Uma que verifica se o arquivo já existe, todos os arquivos que serão acessados para escrita passam por essa verificação, e, por segurança, o programa é finalizado e nada será feito, apenas a liberação de arquivos que foram abertos para teste.
+Outra verifica se o arquivo não existe, se não existir e for necessário ler aquele arquivo inexistente o programa é encerrado com uma mensagem de erro.
+Outra abre o arquivo para leitura 
+Outra abre o arquivo para escrita
+Outra verifica se foi passado mais de um arquivo válido igual, como dois -c ArquivoDeChaves e -c ArquivoDechave, será mostrado uma mensagem avisando e será considerado o último arquivo enviado. Se for passado algum arquivo que não será utilizado não será apresentada nenhuma mensagem de erro já que não causa nenhum problema.
