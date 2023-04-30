@@ -29,7 +29,7 @@ beale.o: beale.c
 	$(CC) -c $(CFLAGS) beale.c
 
 clean:
-	rm -f $(objects) beale
+	rm -f $(objects) 
 
 purge:
 	rm *.o beale
