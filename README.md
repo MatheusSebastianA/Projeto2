@@ -1,7 +1,6 @@
 Aluno: Matheus Sebastian Alencar de Carvalho
 GRR: 20220065
 
-
 O trabalho foi dividido em 5 módulos. 
 Lib_lista_chave: Essa biblioteca é responsável pela criação, inserção ordenada, destruição, impressão em um arquivo de destino e recebimento de uma lista de chaves(a partir de um livro cifra ou a partir de um arquivo de chaves). A impressão e recebimento da lista trata também as listas de posições de cada chave.
 Lib_lista_posicao:  Essa biblioteca é responsável pela criação, inserção ordenada e destruição de uma lista de posições. 
