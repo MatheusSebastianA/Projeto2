@@ -1,5 +1,3 @@
-# Makefile de exemplo (Manual do GNU Make)
-     
 CFLAGS = -Wall -std=c99  # flags de compilacao
 
 CC = gcc
@@ -32,4 +30,4 @@ clean:
 	rm -f $(objects) 
 
 purge:
-	rm *.o beale
+	rm -f beale
